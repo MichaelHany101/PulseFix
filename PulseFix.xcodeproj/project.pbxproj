@@ -7,12 +7,26 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		044EB928306445C100B6CEA5 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		04967759305EAFFA007F246D /* PulseFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PulseFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		044EB93C3064475000B6CEA5 /* Exceptions for "PulseFix" folder in "PulseFix" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 04967758305EAFFA007F246D /* PulseFix */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0496775B305EAFFA007F246D /* PulseFix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				044EB93C3064475000B6CEA5 /* Exceptions for "PulseFix" folder in "PulseFix" target */,
+			);
 			path = PulseFix;
 			sourceTree = "<group>";
 		};
@@ -29,9 +43,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		044EB929306445C100B6CEA5 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				044EB928306445C100B6CEA5 /* Secrets.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		04967750305EAFF9007F246D = {
 			isa = PBXGroup;
 			children = (
+				044EB929306445C100B6CEA5 /* Config */,
 				0496775B305EAFFA007F246D /* PulseFix */,
 				0496775A305EAFFA007F246D /* Products */,
 			);
@@ -127,6 +150,7 @@
 /* Begin XCBuildConfiguration section */
 		04967762305EAFFC007F246D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 044EB928306445C100B6CEA5 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -190,6 +214,7 @@
 		};
 		04967763305EAFFC007F246D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 044EB928306445C100B6CEA5 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -246,6 +271,7 @@
 		};
 		04967765305EAFFC007F246D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 044EB928306445C100B6CEA5 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -253,6 +279,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PulseFix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -277,6 +304,7 @@
 		};
 		04967766305EAFFC007F246D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 044EB928306445C100B6CEA5 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -284,6 +312,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PulseFix/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
