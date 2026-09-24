@@ -26,7 +26,7 @@ struct RootView: View {
         .tint(PulseTheme.blue)
         .task {
             guard !importedOnce else { return }; importedOnce = true
-            do { try app.restore(from: context); await app.loadSeedManuals(context: context) }
+            do { try app.restore(using: SwiftDataManualRepository(context: context)); await app.loadSeedManuals() }
             catch { app.errorMessage = error.localizedDescription }
         }
         .alert("common.error", isPresented: Binding(get: { app.errorMessage != nil }, set: { if !$0 { app.errorMessage = nil } })) {

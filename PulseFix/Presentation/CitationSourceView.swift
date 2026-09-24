@@ -13,7 +13,7 @@ struct CitationSourceView: View {
     @Environment(\.dismiss) private var dismiss
     let citation: Citation
 
-    var manual: ManualDocument? { app.manuals.first { $0.name == citation.manualName } }
+    var manual: ManualDocument? { app.manuals.first { $0.id == evidence?.manualID } }
     var evidence: ManualChunk? { app.chunks.first { $0.id == citation.sourceID } }
 
     var body: some View {

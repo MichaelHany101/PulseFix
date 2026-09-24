@@ -7,7 +7,7 @@
 
 import Foundation
 import Observation
-import SwiftData
+
 
 @MainActor @Observable
 final class AppModel {
@@ -28,6 +28,7 @@ final class AppModel {
     var selectedTab: Tab = .manuals
     var query = ""
     var manuals: [ManualDocument] = []
+    var orders: [WorkOrderRecord] = []
     var chunks: [ManualChunk] = []
     var retrieved: [RetrievedChunk] = []
     var streamedText = ""
@@ -42,39 +43,55 @@ final class AppModel {
     let retriever: any ChunkRetrieving
     let provider: any DiagnosticProviding
 
-    init(ingestor: any ManualIngesting = PDFTextIngestor(),
-         retriever: any ChunkRetrieving = LexicalChunkRetriever(),
-         provider: any DiagnosticProviding = GeminiDiagnosticProvider()) {
+    init(ingestor: any ManualIngesting,
+         retriever: any ChunkRetrieving,
+         provider: any DiagnosticProviding) {
         self.ingestor = ingestor; self.retriever = retriever; self.provider = provider
+    }
+
+    private var repository: (any ManualRepository)?
+    var firstTextSeconds: Double?
+    var totalSeconds: Double?
+    var promptCharacters = 0
+    var streamedCharacters = 0
+    var responseCharactersPerSecond: Double? {
+        guard let seconds = totalSeconds, seconds > 0 else { return nil }
+        return Double(streamedCharacters) / seconds
     }
 
     var locale: Locale { Locale(identifier: language.rawValue) }
 
-    func restore(from context: ModelContext) throws {
-        chunks = try context.fetch(FetchDescriptor<StoredChunk>()).map(\.domain)
-        manuals = try context.fetch(FetchDescriptor<StoredManual>()).map {
-            ManualDocument(id: $0.id, name: $0.name, localURL: URL(fileURLWithPath: $0.localPath), pageCount: $0.pageCount, chunkCount: $0.chunkCount)
-        }
-        trace("ready", "Loaded \(manuals.count) manuals and \(chunks.count) chunks")
+    func restore(using repository: any ManualRepository) throws {
+        self.repository = repository
+        let library = try repository.load()
+        manuals = library.manuals
+        chunks = library.chunks
+        orders = try repository.loadWorkOrders()
+        trace("ready", "")
     }
 
-    func importManual(_ url: URL, context: ModelContext) async {
+    func importManual(_ url: URL) async {
         do {
+            guard let repository else { throw PulseFixError.storageUnavailable }
             trace("ingestion.started", url.lastPathComponent)
             let (manual, newChunks) = try await ingestor.ingest(url: url)
-            manuals.append(manual); chunks.append(contentsOf: newChunks)
-            context.insert(StoredManual(id: manual.id, name: manual.name, localPath: manual.localURL.path, pageCount: manual.pageCount, chunkCount: manual.chunkCount))
-            newChunks.forEach { context.insert(StoredChunk($0)) }
-            try context.save(); trace("ingestion.completed", "\(newChunks.count) chunks")
+            try repository.save(manual: manual, chunks: newChunks)
+            manuals.append(manual)
+            chunks.append(contentsOf: newChunks)
+            trace("ingestion.completed", "\(newChunks.count)")
         } catch { fail(error) }
     }
 
-    func loadSeedManuals(context: ModelContext) async {
-        guard manuals.isEmpty else { return }
-        for name in ["Pump_PX200", "Conveyor_CV10", "Compressor_AC50", "Boiler_BL20", "Motor_MT75"] {
-            if let url = Bundle.main.url(forResource: name, withExtension: "txt", subdirectory: "SeedManuals") {
-                await importManual(url, context: context)
+    func loadSeedManuals() async {
+        for name in ["AC-50_Air_Compressor_Manual", "BL-20_Industrial_Boiler_Manual", "CV-10_Belt_Conveyor_Manual", "MT-75_Three_Phase_Motor_Manual", "PX-200_Centrifugal_Pump_Manual"] {
+            guard !manuals.contains(where: { $0.name == name + ".pdf" }) else { continue }
+            // Xcode may flatten synchronized resource folders into the bundle root.
+            guard let url = Bundle.main.url(forResource: name, withExtension: "pdf", subdirectory: "SeedManuals")
+                ?? Bundle.main.url(forResource: name, withExtension: "pdf") else {
+                fail(PulseFixError.missingSeedManual)
+                continue
             }
+            await importManual(url)
         }
     }
 
@@ -85,45 +102,67 @@ final class AppModel {
         let requestRevision = languageRevision
         isRunning = true; streamedText = ""; diagnosis = nil; errorMessage = nil
         trace("retrieval.started", query)
-        retrieved = await retriever.retrieve(query: query, from: chunks, limit: 5)
-        trace("retrieval.completed", "Top \(retrieved.count); prompt context \(retrieved.reduce(0) { $0 + $1.chunk.content.count }) characters")
+        firstTextSeconds = nil; totalSeconds = nil; promptCharacters = 0; streamedCharacters = 0
+        let useCase = DiagnosisUseCase(retriever: retriever)
+        retrieved = await useCase.retrieve(query: query, chunks: chunks)
+        guard languageRevision == requestRevision else { isRunning = false; return }
+        trace("retrieval.completed", "\(retrieved.count)")
         guard !retrieved.isEmpty else {
-            diagnosis = DiagnosticResult(status: .insufficientEvidence,
-                summary: language == .arabic ? "المعلومات غير كافية في الأدلة المتاحة" : "Not enough information in manuals",
-                safetyPrerequisites: [], recommendedActions: [], citations: [], workOrder: nil)
-            trace("guard.refused", "No relevant local evidence"); isRunning = false; return
+            diagnosis = DiagnosisUseCase.refusal(.insufficientEvidence, language: requestLanguage)
+            trace("guard.noEvidence", ""); isRunning = false; return
         }
-        let safetyText = retrieved.map(\.chunk.content).joined(separator: " ").lowercased()
-        let safetyTerms = ["lockout", "isolate", "zero energy", "ppe", "سلامة", "عزل", "معدات الوقاية"]
-        guard safetyTerms.contains(where: safetyText.contains) else {
-            diagnosis = DiagnosticResult(status: .missingSafetyPrerequisites,
-                summary: language == .arabic ? "متطلبات السلامة غير موجودة في الأدلة المسترجعة، لذلك تم رفض التشخيص." : "Safety prerequisites are missing from the retrieved manual evidence, so diagnosis was refused.",
-                safetyPrerequisites: [], recommendedActions: [], citations: [], workOrder: nil)
-            trace("guard.refused", "Safety prerequisites missing"); isRunning = false; return
+        guard DiagnosisUseCase.hasSafetyPrerequisites(retrieved) else {
+            diagnosis = DiagnosisUseCase.refusal(.missingSafetyPrerequisites, language: requestLanguage)
+            trace("guard.noSafety", ""); isRunning = false; return
         }
         let clock = ContinuousClock(); let started = clock.now; var firstToken: ContinuousClock.Instant?
-        trace("llm.streaming", "Gemini request started")
+        trace("llm.streaming", "")
+        var rawResponse = ""
         do {
             for try await event in provider.streamDiagnosis(query: query, evidence: retrieved, language: requestLanguage) {
                 guard languageRevision == requestRevision else { break }
                 switch event {
+                case .requestPrepared(let count): promptCharacters = count
                 case .text(let text):
-                    if firstToken == nil { firstToken = clock.now; trace("stream.firstToken", "Received") }
-                    streamedText += text
-                case .completed(let result): diagnosis = result
+                    if firstToken == nil {
+                        firstToken = clock.now
+                        firstTextSeconds = Self.seconds(started.duration(to: clock.now))
+                        trace("stream.firstToken", "")
+                    }
+                    rawResponse += text
+                    streamedCharacters = rawResponse.count
+                    streamedText = StreamingSummary.extract(from: rawResponse)
+                case .completed(let result): diagnosis = try DiagnosisUseCase.validate(result, evidence: retrieved, language: requestLanguage)
                 }
             }
-            trace("llm.completed", "Elapsed \(started.duration(to: clock.now))")
-        } catch { if languageRevision == requestRevision { fail(error) } }
+            totalSeconds = Self.seconds(started.duration(to: clock.now))
+            trace(languageRevision == requestRevision ? "llm.completed" : "llm.cancelled", "")
+        } catch {
+            totalSeconds = Self.seconds(started.duration(to: clock.now))
+            if languageRevision == requestRevision { streamedText = ""; fail(error) }
+        }
         isRunning = false
     }
 
-    func decide(_ decision: WorkOrderDecision, editedDraft: WorkOrderDraft, note: String, context: ModelContext) {
-        context.insert(StoredWorkOrder(draft: editedDraft, decision: decision, supervisorNote: note))
-        do { try context.save(); trace("approval.\(decision.rawValue)", editedDraft.title); showingApproval = false; selectedTab = .orders }
-        catch { fail(error) }
+    func decide(_ decision: WorkOrderDecision, editedDraft: WorkOrderDraft, note: String) {
+        do {
+            guard let repository else { throw PulseFixError.storageUnavailable }
+            try repository.save(draft: editedDraft, decision: decision, note: note)
+            orders = try repository.loadWorkOrders()
+            trace("approval.\(decision.rawValue)", editedDraft.title)
+            showingApproval = false; selectedTab = .orders
+        } catch { fail(error) }
+    }
+
+    private static func seconds(_ duration: Duration) -> Double {
+        Double(duration.components.seconds) + Double(duration.components.attoseconds) / 1e18
     }
 
     private func trace(_ state: String, _ details: String) { traces.append(.init(timestamp: .now, state: state, details: details)) }
-    private func fail(_ error: Error) { errorMessage = error.localizedDescription; trace("error", error.localizedDescription); isRunning = false }
+    private func fail(_ error: Error) {
+        let message: String
+        if let error = error as? any AppLocalizedError { message = error.message(language: language) }
+        else { message = language == .arabic ? "تعذر إكمال العملية. تحقق من الملف أو الاتصال ثم حاول مجددًا." : "The operation could not be completed. Check the file or connection and retry." }
+        errorMessage = message; trace("error", message); isRunning = false
+    }
 }

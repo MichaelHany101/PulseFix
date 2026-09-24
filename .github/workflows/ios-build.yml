@@ -1,0 +1,31 @@
+name: iOS Build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Validate seed manuals and localization
+        run: python3 Scripts/validate_resources.py
+      - name: Build iOS Simulator app (no credentials required)
+        run: >-
+          xcodebuild -project PulseFix.xcodeproj -scheme PulseFix
+          -configuration Debug -sdk iphonesimulator
+          -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath .build-output CODE_SIGNING_ALLOWED=NO build
+      - name: Verify all seed PDFs were bundled
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          source = Path('PulseFix/Resources/SeedManuals')
+          app = Path('.build-output/Build/Products/Debug-iphonesimulator/PulseFix.app')
+          for pdf in source.glob('*.pdf'):
+              assert list(app.rglob(pdf.name)), f'Missing bundled PDF: {pdf.name}'
+          PYCODE

@@ -14,13 +14,18 @@ struct TraceInspectorView: View {
             Section("live_metrics") {
                 LabeledContent("manual_chunks", value: "\(app.chunks.count)")
                 LabeledContent("retrieved_chunks", value: "\(app.retrieved.count)")
-                LabeledContent("context.characters", value: "\(app.retrieved.reduce(0) { $0 + $1.chunk.content.count })")
-                LabeledContent("streamed.characters", value: "\(app.streamedText.count)")
+                LabeledContent("context.characters", value: "\(app.promptCharacters)")
+                LabeledContent("streamed.characters", value: "\(app.streamedCharacters)")
+            }
+            Section("stream.performance") {
+                if let seconds = app.firstTextSeconds { LabeledContent("stream.first_seconds", value: String(format: "%.2f s", seconds)) }
+                if let seconds = app.totalSeconds { LabeledContent("stream.total_seconds", value: String(format: "%.2f s", seconds)) }
+                if let rate = app.responseCharactersPerSecond { LabeledContent("stream.characters_second", value: String(format: "%.1f", rate)) }
             }
             Section("state_transitions") {
                 ForEach(app.traces.reversed()) { trace in
                     VStack(alignment: .leading, spacing: 3) {
-                        HStack { Text(trace.state).font(.subheadline.monospaced().bold()); Spacer(); Text(trace.timestamp, style: .time).font(.caption).foregroundStyle(.secondary) }
+                        HStack { Text(LocalizedStringKey("trace.\(trace.state)")).font(.subheadline.monospaced().bold()); Spacer(); Text(trace.timestamp, style: .time).font(.caption).foregroundStyle(.secondary) }
                         Text(trace.details).font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
                     }.padding(.vertical, 3)
                 }

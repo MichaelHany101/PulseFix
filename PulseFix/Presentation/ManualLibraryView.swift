@@ -40,8 +40,8 @@ struct ManualLibraryView: View {
         .navigationTitle("manuals.title")
         .toolbar { AppToolbar(); ToolbarItem(placement: .topBarLeading) { Button { showingImporter = true } label: { Label("import", systemImage: "plus") } } }
         .fileImporter(isPresented: $showingImporter, allowedContentTypes: [.pdf, .plainText]) { result in
-            if case .success(let url) = result { Task { await app.importManual(url, context: context) } }
-            if case .failure(let error) = result { app.errorMessage = error.localizedDescription }
+            if case .success(let url) = result { Task { await app.importManual(url) } }
+            if case .failure(let error) = result { app.errorMessage = app.language == .arabic ? "تعذر فتح الملف المحدد." : error.localizedDescription }
         }
     }
 }
