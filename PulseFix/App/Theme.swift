@@ -18,7 +18,7 @@ enum PulseTheme {
 struct PulseCard<Content: View>: View {
     @ViewBuilder let content: Content
     var body: some View {
-        content.padding(16).frame(maxWidth: .infinity, alignment: .leading)
+        VStack(alignment: .leading, spacing: 12) { content }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
             .background(.background, in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).stroke(.quaternary))
     }
@@ -26,6 +26,6 @@ struct PulseCard<Content: View>: View {
 
 struct StatusPill: View {
     let text: String; let color: Color
-    var body: some View { Text(text).font(.caption.bold()).padding(.horizontal, 10).padding(.vertical, 5).foregroundStyle(color).background(color.opacity(0.12), in: Capsule()) }
+    var body: some View { Text(LocalizedStringKey(text)).font(.caption.bold()).padding(.horizontal, 10).padding(.vertical, 5).foregroundStyle(color).background(color.opacity(0.12), in: Capsule()) }
 }
 

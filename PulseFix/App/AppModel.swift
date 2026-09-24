@@ -13,7 +13,18 @@ import SwiftData
 final class AppModel {
     enum Tab: Hashable { case manuals, diagnose, orders, trace }
 
-    var language: AppLanguage = .english
+    var language: AppLanguage = .english {
+        didSet {
+            guard language != oldValue else { return }
+            languageRevision = UUID()
+            diagnosis = nil
+            streamedText = ""
+            errorMessage = nil
+            showingApproval = false
+            selectedCitation = nil
+        }
+    }
+    private var languageRevision = UUID()
     var selectedTab: Tab = .manuals
     var query = ""
     var manuals: [ManualDocument] = []
@@ -69,6 +80,9 @@ final class AppModel {
 
     func diagnose() async {
         guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        guard !isRunning else { return }
+        let requestLanguage = language
+        let requestRevision = languageRevision
         isRunning = true; streamedText = ""; diagnosis = nil; errorMessage = nil
         trace("retrieval.started", query)
         retrieved = await retriever.retrieve(query: query, from: chunks, limit: 5)
@@ -90,7 +104,8 @@ final class AppModel {
         let clock = ContinuousClock(); let started = clock.now; var firstToken: ContinuousClock.Instant?
         trace("llm.streaming", "Gemini request started")
         do {
-            for try await event in provider.streamDiagnosis(query: query, evidence: retrieved, language: language) {
+            for try await event in provider.streamDiagnosis(query: query, evidence: retrieved, language: requestLanguage) {
+                guard languageRevision == requestRevision else { break }
                 switch event {
                 case .text(let text):
                     if firstToken == nil { firstToken = clock.now; trace("stream.firstToken", "Received") }
@@ -99,7 +114,7 @@ final class AppModel {
                 }
             }
             trace("llm.completed", "Elapsed \(started.duration(to: clock.now))")
-        } catch { fail(error) }
+        } catch { if languageRevision == requestRevision { fail(error) } }
         isRunning = false
     }
 
