@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct PulseFixApp: App {
-    @State private var appModel = AppModel()
+    @State private var appModel = AppModel(ingestor: PDFTextIngestor(), retriever: LexicalChunkRetriever(), provider: GeminiDiagnosticProvider())
 
     var body: some Scene {
         WindowGroup {

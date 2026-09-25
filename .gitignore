@@ -13,3 +13,8 @@ xcuserdata/
 
 # Local secrets
 Config/Secrets.xcconfig
+# Local environment and build output
+.env
+.env.*
+!.env.example
+.build-output/

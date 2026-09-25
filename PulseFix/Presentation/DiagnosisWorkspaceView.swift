@@ -23,7 +23,7 @@ struct DiagnosisWorkspaceView: View {
                 }
                 if !app.retrieved.isEmpty { RetrievedEvidenceView() }
                 if let result = app.diagnosis { DiagnosticResultView(result: result) }
-                else if app.isRunning || !app.streamedText.isEmpty { PulseCard { Text("streaming_response").font(.headline); Text(app.streamedText).textSelection(.enabled) } }
+                else if app.isRunning || !app.streamedText.isEmpty { PulseCard { Text("streaming_response").font(.headline); Text("stream.preview_notice").font(.caption).foregroundStyle(.secondary); Text(app.streamedText).textSelection(.enabled) } }
             }.padding()
         }
         .background(PulseTheme.background)

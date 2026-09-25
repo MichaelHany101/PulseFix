@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
-import SwiftData
+
 
 struct WorkOrdersView: View {
-    @Query(sort: \StoredWorkOrder.createdAt, order: .reverse) private var orders: [StoredWorkOrder]
+    @Environment(AppModel.self) private var app
     var body: some View {
-        List(orders) { order in
+        List(app.orders) { order in
             VStack(alignment: .leading, spacing: 7) {
                 HStack { Text(order.title).font(.headline); Spacer(); StatusPill(text: "decision.\(order.decision.rawValue)", color: order.decision == .rejected ? .red : .green) }
                 Text(order.equipment).foregroundStyle(.secondary)
@@ -19,7 +19,7 @@ struct WorkOrdersView: View {
                 if !order.supervisorNote.isEmpty { Text(order.supervisorNote).font(.caption).italic() }
             }.padding(.vertical, 6)
         }
-        .overlay { if orders.isEmpty { ContentUnavailableView("no_work_orders", systemImage: "wrench.and.screwdriver", description: Text("approval.edit")) } }
+        .overlay { if app.orders.isEmpty { ContentUnavailableView("no_work_orders", systemImage: "wrench.and.screwdriver", description: Text("approval.edit")) } }
         .navigationTitle("tab.work_orders")
         .toolbar { AppToolbar() }
     }

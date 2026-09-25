@@ -30,10 +30,10 @@ struct ApprovalGateView: View {
                     }
                     Section("supervisor_note") { TextField("optional_note", text: $note, axis: .vertical) }
                     Section {
-                        Button("approval.approve") { app.decide(.approved, editedDraft: draftBinding.wrappedValue, note: note, context: context); dismiss() }
+                        Button("approval.approve") { app.decide(.approved, editedDraft: draftBinding.wrappedValue, note: note); dismiss() }
                             .foregroundStyle(.green)
-                        Button("save_edited_version") { app.decide(.edited, editedDraft: draftBinding.wrappedValue, note: note, context: context); dismiss() }
-                        Button("reject") { app.decide(.rejected, editedDraft: draftBinding.wrappedValue, note: note, context: context); dismiss() }
+                        Button("save_edited_version") { app.decide(.edited, editedDraft: draftBinding.wrappedValue, note: note); dismiss() }
+                        Button("reject") { app.decide(.rejected, editedDraft: draftBinding.wrappedValue, note: note); dismiss() }
                             .foregroundStyle(.red)
                     }
                 }

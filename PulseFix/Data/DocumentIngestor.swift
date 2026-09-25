@@ -16,6 +16,8 @@ struct PDFTextIngestor: ManualIngesting {
         let manualID = UUID()
         let originalName = url.lastPathComponent
         let stableURL = try persistLocally(url: url, id: manualID)
+        var completed = false
+        defer { if !completed { try? FileManager.default.removeItem(at: stableURL) } }
         let pages: [String]
 
         if ext == "pdf" {
@@ -30,6 +32,8 @@ struct PDFTextIngestor: ManualIngesting {
         let chunks = pages.enumerated().flatMap { pageIndex, pageText in
             chunk(text: pageText, manualID: manualID, manualName: originalName, page: pageIndex + 1)
         }
+        guard !chunks.isEmpty else { throw PulseFixError.unreadableDocument }
+        completed = true
         let manual = ManualDocument(id: manualID, name: originalName, localURL: stableURL,
                                     pageCount: pages.count, chunkCount: chunks.count)
         return (manual, chunks)

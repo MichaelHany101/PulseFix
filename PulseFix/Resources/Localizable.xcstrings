@@ -139,7 +139,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "إنتهاء"
+            "value" : "تم"
           }
         },
         "en" : {
@@ -187,19 +187,19 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أحرف السياق"
+            "value" : "عدد أحرف الطلب الكامل"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Context Characters"
+            "value" : "Full prompt characters"
           }
         }
       }
     },
     "decision.approved" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -216,7 +216,7 @@
       }
     },
     "decision.edited" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -233,7 +233,7 @@
       }
     },
     "decision.rejected" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -399,7 +399,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "قاعدة المعرفة اليدوية المحلية"
+            "value" : "قاعدة معرفة الكتيبات المحلية"
           }
         },
         "en" : {
@@ -415,13 +415,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "قطع يدوية"
+            "value" : "مقاطع الكتيبات"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Manual Chunks"
+            "value" : "Manual chunks"
           }
         }
       }
@@ -607,7 +607,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تشغيل التشخيص الأرضي"
+            "value" : "تشغيل تشخيص مدعوم بالأدلة"
           }
         },
         "en" : {
@@ -623,7 +623,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تشغيل أداة فحص التتبع"
+            "value" : "سجل تشغيل التشخيص"
           }
         },
         "en" : {
@@ -699,7 +699,7 @@
       }
     },
     "status.grounded" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -716,7 +716,7 @@
       }
     },
     "status.insufficient_evidence" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -733,7 +733,7 @@
       }
     },
     "status.missing_safety_prerequisites" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -765,18 +765,98 @@
         }
       }
     },
-    "streamed.characters" : {
+    "stream.characters_second" : {
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الشخصيات المتدفقة"
+            "value" : "أحرف الاستجابة في الثانية"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Streamed Characters"
+            "value" : "Response characters / second"
+          }
+        }
+      }
+    },
+    "stream.first_seconds" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زمن وصول أول نص"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time to first text"
+          }
+        }
+      }
+    },
+    "stream.performance" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أداء الاستجابة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Streaming performance"
+          }
+        }
+      }
+    },
+    "stream.preview_notice" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملخص أولي — جارٍ التحقق من المصادر."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draft summary — awaiting source validation."
+          }
+        }
+      }
+    },
+    "stream.total_seconds" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الزمن الكلي للطلب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total request time"
+          }
+        }
+      }
+    },
+    "streamed.characters" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أحرف الاستجابة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Response characters"
           }
         }
       }
@@ -905,6 +985,279 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Title"
+          }
+        }
+      }
+    },
+    "trace.%@" : {
+  "comment" : "A trace state.",
+  "isCommentAutoGenerated" : true,
+  "localizations" : {
+    "ar" : {
+      "stringUnit" : {
+        "state" : "translated",
+        "value" : "تتبع: %@"
+      }
+    },
+    "en" : {
+      "stringUnit" : {
+        "state" : "translated",
+        "value" : "Trace: %@"
+      }
+    }
+  }
+},
+    "trace.approval.approved" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تمت الموافقة على أمر العمل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work order approved"
+          }
+        }
+      }
+    },
+    "trace.approval.edited" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم حفظ أمر العمل المعدل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edited work order saved"
+          }
+        }
+      }
+    },
+    "trace.approval.rejected" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم رفض أمر العمل"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work order rejected"
+          }
+        }
+      }
+    },
+    "trace.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعذرت العملية"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Operation failed"
+          }
+        }
+      }
+    },
+    "trace.guard.noEvidence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رُفض التشخيص: لا توجد أدلة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refused: no evidence"
+          }
+        }
+      }
+    },
+    "trace.guard.noSafety" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رُفض التشخيص: أدلة السلامة غير مكتملة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refused: incomplete safety evidence"
+          }
+        }
+      }
+    },
+    "trace.ingestion.completed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اكتمل الاستيراد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import completed"
+          }
+        }
+      }
+    },
+    "trace.ingestion.started" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدأ الاستيراد"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import started"
+          }
+        }
+      }
+    },
+    "trace.llm.cancelled" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تجاهل الاستجابة بعد تغيير اللغة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Response discarded after language change"
+          }
+        }
+      }
+    },
+    "trace.llm.completed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اكتملت الاستجابة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Response completed"
+          }
+        }
+      }
+    },
+    "trace.llm.streaming" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جارٍ استقبال استجابة Gemini"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Receiving Gemini response"
+          }
+        }
+      }
+    },
+    "trace.ready" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تم تحميل المكتبة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Library loaded"
+          }
+        }
+      }
+    },
+    "trace.retrieval.completed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اكتمل البحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search completed"
+          }
+        }
+      }
+    },
+    "trace.retrieval.started" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدأ البحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search started"
+          }
+        }
+      }
+    },
+    "trace.stream.firstToken" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وصل أول جزء من النص"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First text received"
           }
         }
       }

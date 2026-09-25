@@ -67,6 +67,7 @@ struct DiagnosticResult: Codable, Hashable, Sendable {
 }
 
 enum StreamEvent: Sendable {
+    case requestPrepared(promptCharacters: Int)
     case text(String)
     case completed(DiagnosticResult)
 }
@@ -91,14 +92,36 @@ protocol DiagnosticProviding: Sendable {
 }
 
 enum PulseFixError: LocalizedError {
-    case unreadableDocument, unsupportedDocument, missingAPIKey, invalidResponse, ungroundedCitation
+    case unreadableDocument, unsupportedDocument, missingAPIKey, invalidResponse, ungroundedCitation, storageUnavailable, missingSeedManual
     var errorDescription: String? {
         switch self {
+        case .storageUnavailable: "Local storage is not ready."
+        case .missingSeedManual: "A bundled training manual is missing."
         case .unreadableDocument: "The selected manual could not be read."
         case .unsupportedDocument: "Only PDF and TXT manuals are supported."
-        case .missingAPIKey: "Add GEMINI_API_KEY to Config/Secrets.xcconfig."
+        case .missingAPIKey: "Add GEMINI_API_KEY to .env and run Scripts/configure.py."
         case .invalidResponse: "Gemini returned an invalid response."
         case .ungroundedCitation: "The response contained a citation outside the retrieved evidence."
+        }
+    }
+}
+
+
+protocol AppLocalizedError: Error {
+    func message(language: AppLanguage) -> String
+}
+
+extension PulseFixError: AppLocalizedError {
+    func message(language: AppLanguage) -> String {
+        guard language == .arabic else { return errorDescription ?? "Operation failed." }
+        switch self {
+        case .unreadableDocument: return "تعذرت قراءة نص الكتيب. استخدم ملفًا يحتوي على نص قابل للاستخراج."
+        case .unsupportedDocument: return "يدعم التطبيق كتيبات PDF وTXT فقط."
+        case .missingAPIKey: return "أضف مفتاح Gemini إلى ملف .env ثم شغّل أداة إعداد المشروع."
+        case .invalidResponse: return "تعذرت قراءة استجابة Gemini. حاول مجددًا."
+        case .ungroundedCitation: return "لم تتضمن الإجابة مراجع صالحة تدعم التشخيص."
+        case .storageUnavailable: return "التخزين المحلي غير جاهز."
+        case .missingSeedManual: return "أحد الكتيبات التدريبية المرفقة غير موجود."
         }
     }
 }

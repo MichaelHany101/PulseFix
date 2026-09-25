@@ -42,7 +42,7 @@ final class StoredChunk {
     }
 }
 
-enum WorkOrderDecision: String, Codable, CaseIterable { case approved, rejected, edited }
+
 
 @Model
 final class StoredWorkOrder {
