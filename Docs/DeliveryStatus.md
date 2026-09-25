@@ -1,6 +1,6 @@
 # Delivery status
 
-Updated: 2026-09-25
+Updated: 2026-09-26
 
 ## Included in this change
 
@@ -11,15 +11,16 @@ Updated: 2026-09-25
 - Draft summary streaming and first-text/total-time/character-throughput metrics.
 - Local `.env` setup with ignored generated Xcode settings.
 - README, architecture boundaries, layer and sequence diagrams, two ADRs.
-- Build/resource CI without tests or API credentials.
-
-## Intentionally excluded
-
-Unit tests and both videos, by owner instruction. No video links or test success are fabricated.
+- Domain, local search and AppModel unit tests using mock LLM responses; CI runs these before the existing build/resource checks, without API credentials.
+- Product demo and teaching sample Google Drive links in README.
 
 ## External verification required
 
-The owner will handle GitHub publication, visibility and pull requests. The unauthenticated repository URL returned 404 during review, so public visibility is not confirmed. Hosted CI results and Gemini account free-tier eligibility require account verification. The observed local history before this change contained 28 commits over five dates and merges for PRs #1–#3. Do not create artificial/backdated commits to meet counts.
+The owner will handle GitHub publication, visibility and pull requests. The unauthenticated repository URL returned 404 during review, so public visibility is not confirmed. Both Google Drive links opened without requiring sign-in on 2026-09-26, but Drive had not completed reliable browser playback at verification time. Recheck playback before submission. Hosted CI results and Gemini account free-tier eligibility require account verification. The observed local history before this change contained 28 commits over five dates and merges for PRs #1–#3. Do not create artificial/backdated commits to meet counts.
+
+## Unit-test verification
+
+The suite has been simplified at the owner's request to six beginner tests across Domain, local search and AppModel. Advanced regression coverage was removed. See [UnitTests.md](UnitTests.md) for scope and execution instructions.
 
 ## Local verification limits
 

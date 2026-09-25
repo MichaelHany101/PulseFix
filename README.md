@@ -37,6 +37,11 @@ The visible stream is a **draft summary**, not raw JSON. Final actions and the a
 
 Manuals, chunks and work orders persist locally. Diagnosis responses, trace history and language selection are session state. Manual text is not automatically translated. The small bilingual vocabulary covers the supplied domain; arbitrary cross-language equivalence is not guaranteed. Scanned PDFs require OCR elsewhere: this app only extracts embedded text.
 
+## Demo videos
+
+- [Product Demo Video](https://drive.google.com/file/d/1I-juwhDzelAjh-up7bxgXY1PI65L8ERT/view?usp=sharing) — document ingestion, diagnostic flow, citations, approval gate and trace inspection.
+- [Teaching Sample Video](https://drive.google.com/file/d/1VkChY-1JIsqi7nAtrko8pCrcAw89gtwu/view?usp=drive_link) — Clean Architecture and provider abstraction walkthrough.
+
 ## Documentation
 
 - [Architecture and diagrams](Docs/Architecture.md)
@@ -44,6 +49,7 @@ Manuals, chunks and work orders persist locally. Diagnosis responses, trace hist
 - [ADR 002: Provider abstraction](Docs/ADR/002-provider-abstraction.md)
 - [Manual acceptance checklist](Docs/Acceptance.md)
 - [Delivery status](Docs/DeliveryStatus.md)
+- [Unit tests: run, scope and test doubles](Docs/UnitTests.md)
 
 ## Build and CI
 
@@ -55,7 +61,9 @@ xcodebuild -project PulseFix.xcodeproj -scheme PulseFix -configuration Debug \
   -derivedDataPath .build-output CODE_SIGNING_ALLOWED=NO build
 ```
 
-GitHub Actions runs resource validation, an unsigned simulator build, and checks that all five PDFs are in the built app. No real API key or live Gemini call is required by CI. Unit tests and videos are intentionally outside this delivery change at the owner's request.
+Run `swift test` from the repository root (Xcode 26 / Swift 6.2+). The Swift package compiles the original Domain, local search and AppModel files, and tests them with mock LLM responses on the Mac. No simulator or API key is needed for these unit tests. See [test instructions and scope](Docs/UnitTests.md).
+
+GitHub Actions runs unit tests, resource validation, an unsigned simulator build, and checks that all five PDFs are in the built app. No real API key or live Gemini call is required by CI.
 
 ## Service errors
 

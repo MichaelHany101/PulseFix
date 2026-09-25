@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		0410059C3066E2C600F29919 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04967751305EAFF9007F246D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04967758305EAFFA007F246D;
+			remoteInfo = PulseFix;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		041005983066E2C600F29919 /* PulseFixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PulseFixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		044EB928306445C100B6CEA5 /* Build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Build.xcconfig; sourceTree = "<group>"; };
 		04967759305EAFFA007F246D /* PulseFix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PulseFix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -22,6 +33,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		041005993066E2C600F29919 /* PulseFixTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PulseFixTests;
+			sourceTree = "<group>";
+		};
 		0496775B305EAFFA007F246D /* PulseFix */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -33,6 +49,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		041005953066E2C600F29919 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04967756305EAFFA007F246D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,6 +79,7 @@
 			children = (
 				044EB929306445C100B6CEA5 /* Config */,
 				0496775B305EAFFA007F246D /* PulseFix */,
+				041005993066E2C600F29919 /* PulseFixTests */,
 				0496775A305EAFFA007F246D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				04967759305EAFFA007F246D /* PulseFix.app */,
+				041005983066E2C600F29919 /* PulseFixTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,6 +96,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		041005973066E2C600F29919 /* PulseFixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 041005A03066E2C600F29919 /* Build configuration list for PBXNativeTarget "PulseFixTests" */;
+			buildPhases = (
+				041005943066E2C600F29919 /* Sources */,
+				041005953066E2C600F29919 /* Frameworks */,
+				041005963066E2C600F29919 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0410059D3066E2C600F29919 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				041005993066E2C600F29919 /* PulseFixTests */,
+			);
+			name = PulseFixTests;
+			packageProductDependencies = (
+			);
+			productName = PulseFixTests;
+			productReference = 041005983066E2C600F29919 /* PulseFixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		04967758305EAFFA007F246D /* PulseFix */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04967764305EAFFC007F246D /* Build configuration list for PBXNativeTarget "PulseFix" */;
@@ -103,6 +151,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					041005973066E2C600F29919 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 04967758305EAFFA007F246D;
+					};
 					04967758305EAFFA007F246D = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -124,11 +176,19 @@
 			projectRoot = "";
 			targets = (
 				04967758305EAFFA007F246D /* PulseFix */,
+				041005973066E2C600F29919 /* PulseFixTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		041005963066E2C600F29919 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04967757305EAFFA007F246D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -139,6 +199,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		041005943066E2C600F29919 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04967755305EAFFA007F246D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -148,7 +215,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		0410059D3066E2C600F29919 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04967758305EAFFA007F246D /* PulseFix */;
+			targetProxy = 0410059C3066E2C600F29919 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		0410059E3066E2C600F29919 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Eng.MichaelHany.PulseFixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PulseFix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PulseFix";
+			};
+			name = Debug;
+		};
+		0410059F3066E2C600F29919 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Eng.MichaelHany.PulseFixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PulseFix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PulseFix";
+			};
+			name = Release;
+		};
 		04967762305EAFFC007F246D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 044EB928306445C100B6CEA5 /* Build.xcconfig */;
@@ -341,6 +456,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		041005A03066E2C600F29919 /* Build configuration list for PBXNativeTarget "PulseFixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0410059E3066E2C600F29919 /* Debug */,
+				0410059F3066E2C600F29919 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		04967754305EAFF9007F246D /* Build configuration list for PBXProject "PulseFix" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
